@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bjir DOM</title>
+    <script
+      crossorigin
+      src="https://unpkg.com/react@18/umd/react.development.js"
+    ></script>
+    <script
+      crossorigin
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+    ></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="text/babel">
+      const container = document.getElementById("app");
+      const root = ReactDOM.createRoot(container);
+
+      function Tombol(isi) { //membuat sebuah fungsi/komponen yang memiliki parameter isi, kemudian meng-return sebuah button dengan props value yang berbeda-beda diambil dari value-value tertentu di dalam object 'isi'(parameter)
+        return ( // mengambil value 'fungsi', 'ada', dan 'tulisan' di dalam object 'isi'
+          <button onClick={isi.fungsi} disabled={isi.ada}>
+            {isi.tulisan}
+          </button>
+        );
+      }
+
+      function Content() {
+        const [number, setNumber] = React.useState(0); //state 'number' yang dapat dikurang/ditambah dengan nilai awal 0
+        const [disableCounter, setDisableCounter] = React.useState(0); //state disable untuk tombol counter dengan nilai awal 0 atau false
+        const [disableReset, setDisableReset] = React.useState(1); //state disable untuk tombol reset dengan nilai awal 1 atau true
+
+        if (number < 0 || number > 10) { // membuat sebuah pengkondisian apabila state number lebih kecil dari 0 dan lebih besar dari 10
+          setNumber("Done!"); // merubah nilai state 'number' menjadi string 'Done!'
+          setDisableCounter(1); //merubah nilai state 'disableCounter' menjadi 1 atau true
+          setDisableReset(0); // merubah nilai state 'disableReset' menjadi 0 atau false
+        }
+
+        function tambah() { //function untuk menambah state 'number'
+          setNumber(number + 1); //merubah nilai state 'number' += 1
+        }
+        function kurang() { // function untuk mengurangi state 'number'
+          setNumber(number - 1); //merubah nilai state 'number' -= 1
+        }
+        function reset() { //function untuk tombol reset
+          setNumber(0); //merubah nilai state 'number' menjadi 0
+          setDisableCounter(0); //merubah nilai state 'disableCounter' menjadi 0 atau false
+          setDisableReset(1); //merubah nilai state 'disableReset' menjadi 1 atau true
+        }
+
+        return (
+          //memanggil komponen Tombol dalam self-closing tag dengan mengirimkan beberapa props ('fungsi', 'tulisan', dan 'ada')
+          <>
+            <Tombol fungsi={tambah} tulisan="+" ada={disableCounter} />
+            <h3>{number}</h3> {/*print state number*/}
+            <Tombol fungsi={kurang} tulisan="-" ada={disableCounter} />
+            <Tombol fungsi={reset} tulisan="Reset" ada={disableReset} />
+          </>
+        );
+      }
+
+      //render Komponen/fungsi Content dengan memanggilnya dalam self-closing tag
+      root.render(<Content />);
+    </script>
+  </body>
+</html>
